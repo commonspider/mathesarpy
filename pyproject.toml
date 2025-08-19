@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "commonspider_mathesarpy"
+version = "0.0.1"
+authors = [
+  { name="Common Spider", email="commonspider@proton.me" },
+]
+description = "Python bindings for the Mathesar REST API"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/commonspider/mathesarpy"
+Issues = "https://github.com/commonspider/mathesarpy/issues"
