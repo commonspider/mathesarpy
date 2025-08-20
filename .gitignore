@@ -1,6 +1,8 @@
 .idea
 tools/scrape_results
 tests/
+dist/
+upload.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,7 +1,5 @@
 import json
-import sys
 from collections.abc import Iterable
-from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -31,6 +29,8 @@ def scrape():
 
 def scrape_function(doc_function: Tag):
     name = doc_function.find("h3", {"class": "doc-heading"}).text.replace("¶", "").strip()
+    if name.endswith("_"):
+        name = name[:-1]
     out: dict[str, Any] = {"name": name}
     content = [
         item

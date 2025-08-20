@@ -54,8 +54,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("collaborators.list_")
-    def collaborators_list_(self, *, database_id: int = None) -> list[CollaboratorInfo]:
+    @api("collaborators.list")
+    def collaborators_list(self, *, database_id: int = None) -> list[CollaboratorInfo]:
         """
         List information about collaborators. Exposed as list.
         If called with no database_id, all collaborators for all databases are listed.
@@ -99,8 +99,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("columns.list_")
-    def columns_list_(self, *, table_oid: int, database_id: int) -> list[ColumnInfo]:
+    @api("columns.list")
+    def columns_list(self, *, table_oid: int, database_id: int) -> list[ColumnInfo]:
         """
         List information about columns for a table. Exposed as list.
         
@@ -194,8 +194,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("columns.metadata.list_")
-    def columns_metadata_list_(self, *, table_oid: int, database_id: int) -> list[ColumnMetaDataRecord]:
+    @api("columns.metadata.list")
+    def columns_metadata_list(self, *, table_oid: int, database_id: int) -> list[ColumnMetaDataRecord]:
         """
         List metadata associated with columns for a table. Exposed as list.
         
@@ -206,8 +206,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("columns.metadata.set_")
-    def columns_metadata_set_(self, *, column_meta_data_list: list[ColumnMetaDataBlob], table_oid: int, database_id: int):
+    @api("columns.metadata.set")
+    def columns_metadata_set(self, *, column_meta_data_list: list[ColumnMetaDataBlob], table_oid: int, database_id: int):
         """
         Set metadata associated with columns of a table for a database. Exposed as set.
         
@@ -218,8 +218,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("databases.configured.list_")
-    def databases_configured_list_(self, *, server_id: int = None) -> list[ConfiguredDatabaseInfo]:
+    @api("databases.configured.list")
+    def databases_configured_list(self, *, server_id: int = None) -> list[ConfiguredDatabaseInfo]:
         """
         List information about databases for a server. Exposed as list.
         If called with no server_id, all databases for all servers are listed.
@@ -267,8 +267,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("constraints.list_")
-    def constraints_list_(self, *, table_oid: int, database_id: int) -> list[Any]:
+    @api("constraints.list")
+    def constraints_list(self, *, table_oid: int, database_id: int) -> list[Any]:
         """
         List information about constraints in a table. Exposed as list.
         
@@ -547,8 +547,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("explorations.list_")
-    def explorations_list_(self, *, database_id: int, schema_oid: int = None) -> list[ExplorationInfo]:
+    @api("explorations.list")
+    def explorations_list(self, *, database_id: int, schema_oid: int = None) -> list[ExplorationInfo]:
         """
         List information about explorations for a database. Exposed as list.
         
@@ -628,8 +628,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("records.list_")
-    def records_list_(self, *, table_oid: int, database_id: int, limit: int = None, offset: int = None, order: list[OrderBy] = None, filter: Filter = None, grouping: Grouping = None, return_record_summaries: bool = False) -> RecordList:
+    @api("records.list")
+    def records_list(self, *, table_oid: int, database_id: int, limit: int = None, offset: int = None, order: list[OrderBy] = None, filter: Filter = None, grouping: Grouping = None, return_record_summaries: bool = False) -> RecordList:
         """
         List records from a table, and its row count. Exposed as list.
         
@@ -831,8 +831,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("roles.list_")
-    def roles_list_(self, *, database_id: int) -> list[RoleInfo]:
+    @api("roles.list")
+    def roles_list(self, *, database_id: int) -> list[RoleInfo]:
         """
         List information about roles for a database server. Exposed as list.
         Requires a database id inorder to connect to the server.
@@ -894,8 +894,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("roles.configured.list_")
-    def roles_configured_list_(self, *, server_id: int) -> list[ConfiguredRoleInfo]:
+    @api("roles.configured.list")
+    def roles_configured_list(self, *, server_id: int) -> list[ConfiguredRoleInfo]:
         """
         List information about roles configured in Mathesar. Exposed as list.
         
@@ -939,8 +939,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("schemas.list_")
-    def schemas_list_(self, *, database_id: int) -> list[SchemaInfo]:
+    @api("schemas.list")
+    def schemas_list(self, *, database_id: int) -> list[SchemaInfo]:
         """
         List information about schemas in a database. Exposed as list.
         
@@ -1047,8 +1047,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("tables.list_")
-    def tables_list_(self, *, schema_oid: int, database_id: int) -> list[TableInfo]:
+    @api("tables.list")
+    def tables_list(self, *, schema_oid: int, database_id: int) -> list[TableInfo]:
         """
         List information about tables for a schema. Exposed as list.
         
@@ -1116,8 +1116,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("tables.import_")
-    def tables_import_(self, *, data_file_id: int, schema_oid: int, database_id: int, table_name: Optional[str] = None, comment: Optional[str] = None) -> AddedTableInfo:
+    @api("tables.import")
+    def tables_import(self, *, data_file_id: int, schema_oid: int, database_id: int, table_name: Optional[str] = None, comment: Optional[str] = None) -> AddedTableInfo:
         """
         Import a CSV/TSV into a table.
         
@@ -1182,8 +1182,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("tables.metadata.list_")
-    def tables_metadata_list_(self, *, database_id: int) -> list[TableMetaDataRecord]:
+    @api("tables.metadata.list")
+    def tables_metadata_list(self, *, database_id: int) -> list[TableMetaDataRecord]:
         """
         List metadata associated with tables for a database.
         
@@ -1193,8 +1193,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("tables.metadata.set_")
-    def tables_metadata_set_(self, *, table_oid: int, metadata: TableMetaDataBlob, database_id: int):
+    @api("tables.metadata.set")
+    def tables_metadata_set(self, *, table_oid: int, metadata: TableMetaDataBlob, database_id: int):
         """
         Set metadata for a table.
         
@@ -1248,8 +1248,8 @@ class Mathesar(Client):
         
         ...
     
-    @api("users.list_")
-    def users_list_(self) -> list[UserInfo]:
+    @api("users.list")
+    def users_list(self) -> list[UserInfo]:
         """
         List information about all mathesar users. Exposed as list.
         
