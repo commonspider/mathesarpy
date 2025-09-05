@@ -1,1 +1,1 @@
-from .api import Mathesar
+from .mathesar import Mathesar
