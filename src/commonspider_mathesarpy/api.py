@@ -86,7 +86,7 @@ class API(Client):
         ...
     
     @api("collaborators.list")
-    def collaborators_list(self, **kwargs) -> list[CollaboratorInfo]:
+    def collaborators_list(self, /, database_id: int = None, **kwargs) -> list[CollaboratorInfo]:
         """    
         List information about collaborators. Exposed as `list`.
         
@@ -134,7 +134,7 @@ class API(Client):
         ...
     
     @api("columns.add_primary_key_column")
-    def columns_add_primary_key_column(self, /, pkey_type: Literal['IDENTITY', 'UUIDv4'], table_oid: int, database_id: int, **kwargs):
+    def columns_add_primary_key_column(self, /, pkey_type: Literal['IDENTITY', 'UUIDv4'], table_oid: int, database_id: int, drop_existing_pkey_column: bool = False, name: str = id, **kwargs):
         """    
         Add a primary key column to a table of a predefined type.
         
@@ -335,7 +335,7 @@ class API(Client):
         ...
     
     @api("data_modeling.change_primary_key_column")
-    def data_modeling_change_primary_key_column(self, /, column_attnum: int, table_oid: int, database_id: int, **kwargs):
+    def data_modeling_change_primary_key_column(self, /, column_attnum: int, table_oid: int, database_id: int, default: Optional[Literal['IDENTITY', 'UUIDv4']] = None, drop_existing_pk_column: bool = False, **kwargs):
         """    
         Change which column is used for a single-column primary key.
         
@@ -377,7 +377,7 @@ class API(Client):
         ...
     
     @api("data_modeling.split_table")
-    def data_modeling_split_table(self, /, table_oid: int, column_attnums: list, extracted_table_name: str, database_id: int, **kwargs) -> SplitTableInfo:
+    def data_modeling_split_table(self, /, table_oid: int, column_attnums: list, extracted_table_name: str, database_id: int, relationship_fk_column_name: str = None, **kwargs) -> SplitTableInfo:
         """    
         Extract columns from a table to create a new table, linked by a foreign key.
         
@@ -440,7 +440,7 @@ class API(Client):
         ...
     
     @api("databases.upgrade_sql")
-    def databases_upgrade_sql(self, /, database_id: int, **kwargs):
+    def databases_upgrade_sql(self, /, database_id: int, username: str = None, password: str = None, **kwargs):
         """    
         Install, Upgrade, or Reinstall the Mathesar SQL on a database.
         
@@ -457,7 +457,7 @@ class API(Client):
         ...
     
     @api("databases.configured.disconnect")
-    def databases_configured_disconnect(self, /, database_id: int, **kwargs):
+    def databases_configured_disconnect(self, /, database_id: int, schemas_to_remove: list[str] = ('msar', '__msar', 'mathesar_types'), strict: bool = True, role_name: str = None, password: str = None, disconnect_db_server: bool = False, **kwargs):
         """    
         Disconnect a configured database, after removing Mathesar SQL from it.
         
@@ -485,7 +485,7 @@ class API(Client):
         ...
     
     @api("databases.configured.list")
-    def databases_configured_list(self, **kwargs) -> list[ConfiguredDatabaseInfo]:
+    def databases_configured_list(self, /, server_id: int = None, **kwargs) -> list[ConfiguredDatabaseInfo]:
         """    
         List information about databases for a server. Exposed as `list`.
         
@@ -575,7 +575,7 @@ class API(Client):
         ...
     
     @api("databases.setup.connect_existing")
-    def databases_setup_connect_existing(self, /, host: str, database: str, role: str, password: str, **kwargs) -> DatabaseConnectionResult:
+    def databases_setup_connect_existing(self, /, host: str, database: str, role: str, password: str, port: Optional[int] = None, sample_data: list[str] = (), nickname: Optional[str] = None, **kwargs) -> DatabaseConnectionResult:
         """    
         Connect Mathesar to an existing database on a server.
         
@@ -604,7 +604,7 @@ class API(Client):
         ...
     
     @api("databases.setup.create_new")
-    def databases_setup_create_new(self, /, database: str, **kwargs) -> DatabaseConnectionResult:
+    def databases_setup_create_new(self, /, database: str, sample_data: list[str] = (), nickname: Optional[str] = None, **kwargs) -> DatabaseConnectionResult:
         """    
         Set up a new database on the internal server.
         
@@ -668,7 +668,7 @@ class API(Client):
         ...
     
     @api("explorations.list")
-    def explorations_list(self, /, database_id: int, **kwargs) -> list[ExplorationInfo]:
+    def explorations_list(self, /, database_id: int, schema_oid: int = None, **kwargs) -> list[ExplorationInfo]:
         """    
         List information about explorations for a database. Exposed as `list`.
         
@@ -697,7 +697,7 @@ class API(Client):
         ...
     
     @api("explorations.run")
-    def explorations_run(self, /, exploration_def: ExplorationDef, **kwargs) -> ExplorationResult:
+    def explorations_run(self, /, exploration_def: ExplorationDef, limit: int = 100, offset: int = 0, **kwargs) -> ExplorationResult:
         """    
         Run an exploration.
         
@@ -713,7 +713,7 @@ class API(Client):
         ...
     
     @api("explorations.run_saved")
-    def explorations_run_saved(self, /, exploration_id: int, **kwargs) -> ExplorationResult:
+    def explorations_run_saved(self, /, exploration_id: int, limit: int = 100, offset: int = 0, **kwargs) -> ExplorationResult:
         """    
         Run a saved exploration.
         
@@ -729,7 +729,7 @@ class API(Client):
         ...
     
     @api("records.add")
-    def records_add(self, /, record_def: dict, table_oid: int, database_id: int, **kwargs) -> RecordAdded:
+    def records_add(self, /, record_def: dict, table_oid: int, database_id: int, return_record_summaries: bool = False, **kwargs) -> RecordAdded:
         """    
         Add a single record to a table.
         
@@ -770,7 +770,7 @@ class API(Client):
         ...
     
     @api("records.get")
-    def records_get(self, /, record_id: Any, table_oid: int, database_id: int, **kwargs) -> RecordList:
+    def records_get(self, /, record_id: Any, table_oid: int, database_id: int, return_record_summaries: bool = False, table_record_summary_templates: dict[str, Any] = None, **kwargs) -> RecordList:
         """    
         Get single record from a table by its primary key.
         
@@ -793,7 +793,7 @@ class API(Client):
         ...
     
     @api("records.list")
-    def records_list(self, /, table_oid: int, database_id: int, **kwargs) -> RecordList:
+    def records_list(self, /, table_oid: int, database_id: int, limit: int = None, offset: int = None, order: list[OrderBy] = None, filter: Filter = None, grouping: Grouping = None, return_record_summaries: bool = False, **kwargs) -> RecordList:
         """    
         List records from a table, and its row count. Exposed as `list`.
         
@@ -816,7 +816,7 @@ class API(Client):
         ...
     
     @api("records.patch")
-    def records_patch(self, /, record_def: dict, record_id: Any, table_oid: int, database_id: int, **kwargs) -> RecordAdded:
+    def records_patch(self, /, record_def: dict, record_id: Any, table_oid: int, database_id: int, return_record_summaries: bool = False, **kwargs) -> RecordAdded:
         """    
         Modify a record in a table.
         
@@ -841,7 +841,7 @@ class API(Client):
         ...
     
     @api("records.search")
-    def records_search(self, /, table_oid: int, database_id: int, **kwargs) -> RecordList:
+    def records_search(self, /, table_oid: int, database_id: int, search_params: list[SearchParam] = (), limit: int = 10, offset: int = 0, return_record_summaries: bool = False, **kwargs) -> RecordList:
         """    
         List records from a table according to `search_params`.
         
@@ -866,7 +866,7 @@ class API(Client):
         ...
     
     @api("roles.add")
-    def roles_add(self, /, rolename: str, database_id: int, **kwargs) -> RoleInfo:
+    def roles_add(self, /, rolename: str, database_id: int, password: str = None, login: bool = None, **kwargs) -> RoleInfo:
         """    
         Add a new login/non-login role on a database server.
         
@@ -995,7 +995,7 @@ class API(Client):
         ...
     
     @api("schemas.add")
-    def schemas_add(self, /, name: str, database_id: int, **kwargs) -> SchemaInfo:
+    def schemas_add(self, /, name: str, database_id: int, owner_oid: int = None, description: Optional[str] = None, **kwargs) -> SchemaInfo:
         """    
         Add a schema
         
@@ -1163,7 +1163,7 @@ class API(Client):
         ...
     
     @api("tables.add")
-    def tables_add(self, /, schema_oid: int, database_id: int, **kwargs) -> int:
+    def tables_add(self, /, schema_oid: int, database_id: int, table_name: str = None, pkey_column_info: CreatablePkColumnInfo = {}, column_data_list: list[CreatableColumnInfo] = (), constraint_data_list: list[list[Union[ForeignKeyConstraint, PrimaryKeyConstraint, UniqueConstraint]]] = (), owner_oid: int = None, comment: str = None, **kwargs) -> int:
         """    
         Add a table with a default id column.
         
@@ -1185,7 +1185,7 @@ class API(Client):
         ...
     
     @api("tables.delete")
-    def tables_delete(self, /, table_oid: int, database_id: int, **kwargs) -> str:
+    def tables_delete(self, /, table_oid: int, database_id: int, cascade: bool = False, **kwargs) -> str:
         """    
         Delete a table from a schema.
         
@@ -1216,7 +1216,7 @@ class API(Client):
         ...
     
     @api("tables.get_import_preview")
-    def tables_get_import_preview(self, /, table_oid: int, columns: list[PreviewableColumnInfo], database_id: int, **kwargs) -> list[dict]:
+    def tables_get_import_preview(self, /, table_oid: int, columns: list[PreviewableColumnInfo], database_id: int, limit: int = 20, **kwargs) -> list[dict]:
         """    
         Preview an imported table.
         
@@ -1248,7 +1248,7 @@ class API(Client):
         ...
     
     @api("tables.import")
-    def tables_import(self, /, data_file_id: int, schema_oid: int, database_id: int, **kwargs) -> AddedTableInfo:
+    def tables_import(self, /, data_file_id: int, schema_oid: int, database_id: int, table_name: Optional[str] = None, comment: Optional[str] = None, **kwargs) -> AddedTableInfo:
         """    
         Import a CSV/TSV into a table.
         
@@ -1281,7 +1281,7 @@ class API(Client):
         ...
     
     @api("tables.list_joinable")
-    def tables_list_joinable(self, /, table_oid: int, database_id: int, **kwargs) -> JoinableTableInfo:
+    def tables_list_joinable(self, /, table_oid: int, database_id: int, max_depth: int = 3, **kwargs) -> JoinableTableInfo:
         """    
         List details for joinable tables.
         

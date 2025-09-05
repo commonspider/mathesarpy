@@ -136,7 +136,7 @@ def parse_method(meth):
         if default is Parameter.empty:
             params.append(f"{param["name"]}: {param["type"]}")
         else:
-            f"{param["name"]}: {param["type"]} = {default}"
+            params_with_default.append(f"{param["name"]}: {param["type"]} = {default}")
     params.extend(params_with_default)
     if len(params) == 0:
         params = ["self", "**kwargs"]
