@@ -1,5 +1,5 @@
 # Mathesarpy
-Python bindings for the Mathesar API.
+Unofficial python bindings for the Mathesar API.
 
 ## Installation
 ```
