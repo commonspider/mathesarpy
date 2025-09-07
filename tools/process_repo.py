@@ -173,10 +173,16 @@ class API(Client):
 
 
 def parse_class(cls):
-    return f"class {cls["name"]}(TypedDict):\n" + "\n".join([
-        f"    {param["name"]}: {param["type"]}"
-        for param in cls["params"]
-    ]) + "\n"
+    return (
+        f"class {cls["name"]}(TypedDict):\n" +
+        '    """' +
+        tab(cls["doc"]) +
+        '\n    """\n\n' +
+        "\n".join([
+            f"    {param["name"]}: {param["type"]}"
+            for param in cls["params"]
+        ]) + "\n"
+    )
 
 
 with open(out_path / "classes.py", "w") as f:
