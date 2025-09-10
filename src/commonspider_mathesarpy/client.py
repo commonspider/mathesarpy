@@ -7,6 +7,8 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from requests import Session
 
+from .exceptions import raise_for_exception
+
 
 class Client:
     def __init__(self, url: str):
@@ -48,8 +50,7 @@ class Client:
             }
         )
         data = response.json()
-        if error := data.get("error"):
-            raise Exception(error["message"])
+        raise_for_exception(data)
         return data["result"]
 
 

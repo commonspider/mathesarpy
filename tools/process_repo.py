@@ -88,6 +88,8 @@ def parse_annotation(ann, use_not_required):
         return "Any"
     elif isinstance(ann, ForwardRef):
         return f"'{ann.__forward_arg__}'"
+    elif isinstance(ann, str):
+        return f"'{ann}'"
     elif ann is None:
         return "None"
     else:
