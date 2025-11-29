@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "commonspider_mathesarpy"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
   { name="Common Spider", email="commonspider@proton.me" },
 ]
@@ -19,8 +19,8 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
+license = "GPLv3"
+license-files = ["LICENSE"]
 
 [project.urls]
 Homepage = "https://github.com/commonspider/mathesarpy"

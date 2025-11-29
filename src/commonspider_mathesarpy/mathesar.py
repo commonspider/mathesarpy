@@ -1,7 +1,8 @@
-from typing import Any, Optional
+from typing import Any
 
 from .api import API
-from .classes import SearchParam, RecordList, RecordAdded, UserDef, UserInfo, RoleInfo, ConfiguredRoleInfo, CollaboratorInfo
+from .classes import SearchParam, RecordList, RecordAdded, UserDef, UserInfo, RoleInfo, ConfiguredRoleInfo, \
+    CollaboratorInfo
 from .exceptions import DuplicateObject, IntegrityError, UndefinedObject, DoesNotExist
 
 
@@ -82,7 +83,7 @@ class Mathesar(API):
             record_list: RecordList = None,
             id_col: str = None,
             **kwargs
-    ) -> Optional[int]:
+    ) -> list[Any]:
         if record_list is not None:
             columns = Columns(self, table_oid=table_oid, database_id=database_id)
             id_col = str(columns[id_col])

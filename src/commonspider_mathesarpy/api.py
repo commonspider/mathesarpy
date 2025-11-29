@@ -1,5 +1,5 @@
-from typing import Literal, Optional
-
+from typing import Optional
+        
 from .classes import *
 from .client import Client, api
 
@@ -15,8 +15,6 @@ class API(Client):
         reports. Any reports currently saved are removed when the
         Installation ID is deleted.
         """
-        
-        ...
     
     @api("analytics.get_state")
     def analytics_get_state(self, **kwargs) -> AnalyticsState:
@@ -24,8 +22,6 @@ class API(Client):
         Returns:
             A boolean to identify if analytics is enabled.
         """
-        
-        ...
     
     @api("analytics.initialize")
     def analytics_initialize(self, **kwargs):
@@ -35,8 +31,6 @@ class API(Client):
         If initialized, analytics are gathered to a local model once per day,
         and uploaded.
         """
-        
-        ...
     
     @api("analytics.upload_feedback")
     def analytics_upload_feedback(self, /, message: str, **kwargs):
@@ -46,8 +40,6 @@ class API(Client):
         Args:
             message: The feedback message to send.
         """
-        
-        ...
     
     @api("analytics.view_report")
     def analytics_view_report(self, **kwargs) -> AnalyticsReport:
@@ -58,8 +50,6 @@ class API(Client):
         Returns:
             An analytics report.
         """
-        
-        ...
     
     @api("collaborators.add")
     def collaborators_add(self, /, database_id: int, user_id: int, configured_role_id: int, **kwargs) -> CollaboratorInfo:
@@ -71,8 +61,6 @@ class API(Client):
             user_id: The Django id of the User model instance who'd be the collaborator.
             configured_role_id: The Django id of the ConfiguredRole model instance to associate with the collaborator.
         """
-        
-        ...
     
     @api("collaborators.delete")
     def collaborators_delete(self, /, collaborator_id: int, **kwargs):
@@ -82,8 +70,6 @@ class API(Client):
         Args:
             collaborator_id: The Django id of the UserDatabaseRoleMap model instance of the collaborator.
         """
-        
-        ...
     
     @api("collaborators.list")
     def collaborators_list(self, /, database_id: int = None, **kwargs) -> list[CollaboratorInfo]:
@@ -98,8 +84,6 @@ class API(Client):
         Returns:
             A list of collaborators.
         """
-        
-        ...
     
     @api("collaborators.set_role")
     def collaborators_set_role(self, /, collaborator_id: int, configured_role_id: int, **kwargs) -> CollaboratorInfo:
@@ -110,8 +94,6 @@ class API(Client):
             collaborator_id: The Django id of the UserDatabaseRoleMap model instance of the collaborator.
             configured_role_id: The Django id of the ConfiguredRole model instance to associate with the collaborator.
         """
-        
-        ...
     
     @api("columns.add")
     def columns_add(self, /, column_data_list: list[CreatableColumnInfo], table_oid: int, database_id: int, **kwargs) -> list[int]:
@@ -130,8 +112,6 @@ class API(Client):
         Returns:
             An array of the attnums of the new columns.
         """
-        
-        ...
     
     @api("columns.add_primary_key_column")
     def columns_add_primary_key_column(self, /, pkey_type: Literal['IDENTITY', 'UUIDv4'], table_oid: int, database_id: int, drop_existing_pkey_column: bool = False, name: str = id, **kwargs):
@@ -161,8 +141,6 @@ class API(Client):
             drop_existing_pkey_column: Whether to drop the old pkey column.
             name: A custom name for the added primary key column.
         """
-        
-        ...
     
     @api("columns.delete")
     def columns_delete(self, /, column_attnums: list[int], table_oid: int, database_id: int, **kwargs) -> int:
@@ -177,8 +155,6 @@ class API(Client):
         Returns:
             The number of columns dropped.
         """
-        
-        ...
     
     @api("columns.list")
     def columns_list(self, /, table_oid: int, database_id: int, **kwargs) -> list[ColumnInfo]:
@@ -192,8 +168,6 @@ class API(Client):
         Returns:
             A list of column details.
         """
-        
-        ...
     
     @api("columns.list_with_metadata")
     def columns_list_with_metadata(self, /, table_oid: int, database_id: int, **kwargs) -> list:
@@ -205,8 +179,6 @@ class API(Client):
         Returns:
             A list of column details.
         """
-        
-        ...
     
     @api("columns.patch")
     def columns_patch(self, /, column_data_list: list[SettableColumnInfo], table_oid: int, database_id: int, **kwargs) -> int:
@@ -223,8 +195,17 @@ class API(Client):
         Returns:
             The number of columns altered.
         """
+    
+    @api("columns.reset_mash")
+    def columns_reset_mash(self, /, column_attnum: int, table_oid: int, database_id: int, **kwargs):
+        """    
+        Resets the outdated "mash" for a given file column.
         
-        ...
+        Args:
+            column_attnum: attnum of the file column whose mashes need to be reset.
+            table_oid: Identity of the table containing the file column.
+            database_id: The Django id of the database containing the table.
+        """
     
     @api("columns.metadata.list")
     def columns_metadata_list(self, /, table_oid: int, database_id: int, **kwargs) -> list[ColumnMetaDataRecord]:
@@ -238,8 +219,6 @@ class API(Client):
         Returns:
             A list of column meta data objects.
         """
-        
-        ...
     
     @api("columns.metadata.set")
     def columns_metadata_set(self, /, column_meta_data_list: list[ColumnMetaDataBlob], table_oid: int, database_id: int, **kwargs):
@@ -251,8 +230,6 @@ class API(Client):
             table_oid: Identity of the table whose metadata we'll modify.
             database_id: The Django id of the database containing the table.
         """
-        
-        ...
     
     @api("constraints.add")
     def constraints_add(self, /, table_oid: int, constraint_def_list: list[Union[ForeignKeyConstraint, PrimaryKeyConstraint, UniqueConstraint]], database_id: int, **kwargs) -> list[int]:
@@ -267,8 +244,6 @@ class API(Client):
         Returns:
             The oid(s) of all the constraints on the table.
         """
-        
-        ...
     
     @api("constraints.delete")
     def constraints_delete(self, /, table_oid: int, constraint_oid: int, database_id: int, **kwargs) -> str:
@@ -283,8 +258,6 @@ class API(Client):
         Returns:
             The name of the dropped constraint.
         """
-        
-        ...
     
     @api("constraints.list")
     def constraints_list(self, /, table_oid: int, database_id: int, **kwargs) -> list[ConstraintInfo]:
@@ -298,8 +271,6 @@ class API(Client):
         Returns:
             A list of constraint details.
         """
-        
-        ...
     
     @api("data_modeling.add_foreign_key_column")
     def data_modeling_add_foreign_key_column(self, /, column_name: str, referrer_table_oid: int, referent_table_oid: int, database_id: int, **kwargs):
@@ -314,8 +285,6 @@ class API(Client):
             referrer_table_oid: The OID of the table getting the new column.
             referent_table_oid: The OID of the table being referenced.
         """
-        
-        ...
     
     @api("data_modeling.add_mapping_table")
     def data_modeling_add_mapping_table(self, /, table_name: str, mapping_columns: list[MappingColumn], schema_oid: int, database_id: int, **kwargs):
@@ -331,8 +300,6 @@ class API(Client):
             mapping_columns: The foreign key columns to create in the
                 mapping table.
         """
-        
-        ...
     
     @api("data_modeling.change_primary_key_column")
     def data_modeling_change_primary_key_column(self, /, column_attnum: int, table_oid: int, database_id: int, default: Optional[Literal['IDENTITY', 'UUIDv4']] = None, drop_existing_pk_column: bool = False, **kwargs):
@@ -359,8 +326,6 @@ class API(Client):
             drop_existing_pk_column: Whether we should drop the current pkey
                 column.
         """
-        
-        ...
     
     @api("data_modeling.move_columns")
     def data_modeling_move_columns(self, /, source_table_oid: int, target_table_oid: int, move_column_attnums: list[int], database_id: int, **kwargs):
@@ -373,8 +338,6 @@ class API(Client):
             move_column_attnums: The list of attnum(s) to move from source table to the target table.
             database_id: The Django id of the database containing the table.
         """
-        
-        ...
     
     @api("data_modeling.split_table")
     def data_modeling_split_table(self, /, table_oid: int, column_attnums: list, extracted_table_name: str, database_id: int, relationship_fk_column_name: str = None, **kwargs) -> SplitTableInfo:
@@ -391,8 +354,6 @@ class API(Client):
         Returns:
             The SplitTableInfo object describing the details for the created table as a result of column extraction.
         """
-        
-        ...
     
     @api("data_modeling.suggest_types")
     def data_modeling_suggest_types(self, /, table_oid: int, database_id: int, **kwargs) -> dict:
@@ -410,8 +371,6 @@ class API(Client):
         result of `format_type` for the inferred type of each column, i.e., the
         canonical string referring to the type.
         """
-        
-        ...
     
     @api("databases.delete")
     def databases_delete(self, /, database_oid: int, database_id: int, **kwargs):
@@ -422,8 +381,6 @@ class API(Client):
             database_oid: The OID of the database to delete on the database.
             database_id: The Django id of the database to connect to.
         """
-        
-        ...
     
     @api("databases.get")
     def databases_get(self, /, database_id: int, **kwargs) -> DatabaseInfo:
@@ -436,8 +393,6 @@ class API(Client):
         Returns:
             Information about the database, and the current user privileges.
         """
-        
-        ...
     
     @api("databases.upgrade_sql")
     def databases_upgrade_sql(self, /, database_id: int, username: str = None, password: str = None, **kwargs):
@@ -453,8 +408,6 @@ class API(Client):
             username: The username of the role used for upgrading.
             password: The password of the role used for upgrading.
         """
-        
-        ...
     
     @api("databases.configured.disconnect")
     def databases_configured_disconnect(self, /, database_id: int, schemas_to_remove: list[str] = ('msar', '__msar', 'mathesar_types'), strict: bool = True, role_name: str = None, password: str = None, disconnect_db_server: bool = False, **kwargs):
@@ -481,8 +434,6 @@ class API(Client):
                 This is intended for optional use while disconnecting the
                 last database on the server.
         """
-        
-        ...
     
     @api("databases.configured.list")
     def databases_configured_list(self, /, server_id: int = None, **kwargs) -> list[ConfiguredDatabaseInfo]:
@@ -497,8 +448,6 @@ class API(Client):
         Returns:
             A list of database details.
         """
-        
-        ...
     
     @api("databases.configured.patch")
     def databases_configured_patch(self, /, database_id: int, patch: ConfiguredDatabasePatch, **kwargs) -> ConfiguredDatabaseInfo:
@@ -512,8 +461,6 @@ class API(Client):
         Returns:
             An object describing the database.
         """
-        
-        ...
     
     @api("databases.privileges.list_direct")
     def databases_privileges_list_direct(self, /, database_id: int, **kwargs) -> list[DBPrivileges]:
@@ -526,8 +473,6 @@ class API(Client):
         Returns:
             A list of database privileges.
         """
-        
-        ...
     
     @api("databases.privileges.replace_for_roles")
     def databases_privileges_replace_for_roles(self, /, privileges: list[DBPrivileges], database_id: int, **kwargs) -> list[DBPrivileges]:
@@ -550,8 +495,6 @@ class API(Client):
             A list of all non-default privileges on the database after the
             operation.
         """
-        
-        ...
     
     @api("databases.privileges.transfer_ownership")
     def databases_privileges_transfer_ownership(self, /, new_owner_oid: int, database_id: int, **kwargs) -> DatabaseInfo:
@@ -571,8 +514,6 @@ class API(Client):
         Returns:
             Information about the database, and the current user privileges.
         """
-        
-        ...
     
     @api("databases.setup.connect_existing")
     def databases_setup_connect_existing(self, /, host: str, database: str, role: str, password: str, port: Optional[int] = None, sample_data: list[str] = (), nickname: Optional[str] = None, **kwargs) -> DatabaseConnectionResult:
@@ -596,12 +537,11 @@ class API(Client):
                 - 'ice_cream_employees'
                 - 'library_management'
                 - 'library_makerspace'
+                - 'movie_rentals'
                 - 'museum_exhibits'
                 - 'nonprofit_grants'
             nickname: An optional nickname for the database.
         """
-        
-        ...
     
     @api("databases.setup.create_new")
     def databases_setup_create_new(self, /, database: str, sample_data: list[str] = (), nickname: Optional[str] = None, **kwargs) -> DatabaseConnectionResult:
@@ -621,12 +561,11 @@ class API(Client):
                 - 'ice_cream_employees'
                 - 'library_management'
                 - 'library_makerspace'
+                - 'movie_rentals'
                 - 'museum_exhibits'
                 - 'nonprofit_grants'
             nickname: An optional nickname for the database.
         """
-        
-        ...
     
     @api("explorations.add")
     def explorations_add(self, /, exploration_def: ExplorationDef, **kwargs) -> ExplorationInfo:
@@ -639,8 +578,6 @@ class API(Client):
         Returns:
             The exploration details for the newly created exploration.
         """
-        
-        ...
     
     @api("explorations.delete")
     def explorations_delete(self, /, exploration_id: int, **kwargs):
@@ -650,8 +587,6 @@ class API(Client):
         Args:
             exploration_id: The Django id of the exploration to delete.
         """
-        
-        ...
     
     @api("explorations.get")
     def explorations_get(self, /, exploration_id: int, **kwargs) -> ExplorationInfo:
@@ -664,8 +599,6 @@ class API(Client):
         Returns:
             Exploration details for a given exploration_id.
         """
-        
-        ...
     
     @api("explorations.list")
     def explorations_list(self, /, database_id: int, schema_oid: int = None, **kwargs) -> list[ExplorationInfo]:
@@ -679,8 +612,6 @@ class API(Client):
         Returns:
             A list of exploration details.
         """
-        
-        ...
     
     @api("explorations.replace")
     def explorations_replace(self, /, new_exploration: ExplorationInfo, **kwargs) -> ExplorationInfo:
@@ -693,8 +624,6 @@ class API(Client):
         Returns:
             The exploration details for the replaced exploration.
         """
-        
-        ...
     
     @api("explorations.run")
     def explorations_run(self, /, exploration_def: ExplorationDef, limit: int = 100, offset: int = 0, **kwargs) -> ExplorationResult:
@@ -709,8 +638,6 @@ class API(Client):
         Returns:
             The result of the exploration run.
         """
-        
-        ...
     
     @api("explorations.run_saved")
     def explorations_run_saved(self, /, exploration_id: int, limit: int = 100, offset: int = 0, **kwargs) -> ExplorationResult:
@@ -725,8 +652,129 @@ class API(Client):
         Returns:
             The result of the exploration run.
         """
+    
+    @api("forms.add")
+    def forms_add(self, /, form_def: AddFormDef, **kwargs) -> FormInfo:
+        """    
+        Add a new form.
         
-        ...
+        Args:
+            form_def: A dict describing the form to create.
+        
+        Returns:
+            The details for the newly created form.
+        """
+    
+    @api("forms.delete")
+    def forms_delete(self, /, form_id: int, **kwargs):
+        """    
+        Delete a form.
+        
+        Args:
+            form_id: The Django id of the form to delete.
+        """
+    
+    @api("forms.get")
+    def forms_get(self, /, form_token: str, **kwargs) -> FormInfo:
+        """    
+        List information about a form.
+        
+        Args:
+            form_token: The unique token of the form.
+        
+        Returns:
+            Form details for a given form_token.
+        """
+    
+    @api("forms.get_source_info")
+    def forms_get_source_info(self, /, form_token: str, **kwargs) -> FormInfo:
+        """    
+        Retrieve the sources of a form.
+        
+        Args:
+            form_token: The unique token of the form.
+        
+        Returns:
+            The source tables & columns of the form:
+                - Tables associated with the form.
+                - Columns of the fields associated with the form.
+        """
+    
+    @api("forms.list")
+    def forms_list(self, /, database_id: int, schema_oid: int, **kwargs) -> FormInfo:
+        """    
+        List information about forms for a database. Exposed as `list`.
+        
+        Args:
+            database_id: The Django id of the database containing the form.
+            schema_oid: The OID of the schema containing the base table(s) of the forms(s).
+        
+        Returns:
+            A list of form info.
+        """
+    
+    @api("forms.list_related_records")
+    def forms_list_related_records(self, /, form_token: str, field_key: str, limit: Optional[int] = None, offset: Optional[int] = None, search: Optional[str] = None, **kwargs) -> RecordSummaryList:
+        """    
+        List records for selection via the row seeker
+        
+        Args:
+            form_token: The unique token of the form.
+            field_key: The key of the foreign key field for which to list related records.
+            limit: Optional limit on the number of records to return.
+            offset: Optional offset for pagination.
+            search: Optional search term to filter records.
+        
+        Returns:
+            The requested records, along with some metadata.
+        """
+    
+    @api("forms.patch")
+    def forms_patch(self, /, update_form_def: SettableFormDef, **kwargs) -> FormInfo:
+        """    
+        Update a form.
+        
+        Args:
+            update_form_def: A dict describing the form to update, including the updated fields.
+        
+        Returns:
+            The form info for the updated form.
+        """
+    
+    @api("forms.regenerate_token")
+    def forms_regenerate_token(self, /, form_id: int, **kwargs) -> str:
+        """    
+        Regenerate the unique token for a form.
+        
+        Args:
+            form_id: The Django id of the form.
+        
+        Returns:
+            The new token for the form.
+        """
+    
+    @api("forms.set_publish_public")
+    def forms_set_publish_public(self, /, form_id: int, publish_public: bool, **kwargs) -> bool:
+        """    
+        Set/Unset the form to be publicly shareable.
+        
+        Args:
+            form_id: The Django id of the form.
+            publish_public: Specify whether to share the form publicly.
+        
+        Returns:
+            The updated state of public sharing for the form.
+        """
+    
+    @api("forms.submit")
+    def forms_submit(self, /, form_token: str, values: dict, **kwargs):
+        """    
+        Submit a form.
+        
+        Args:
+            form_token: The unique token of the form.
+            values: A dict describing the values to insert.
+        """
     
     @api("records.add")
     def records_add(self, /, record_def: dict, table_oid: int, database_id: int, return_record_summaries: bool = False, **kwargs) -> RecordAdded:
@@ -750,11 +798,9 @@ class API(Client):
         Returns:
             The created record, along with some metadata.
         """
-        
-        ...
     
     @api("records.delete")
-    def records_delete(self, /, record_ids: list[Any], table_oid: int, database_id: int, **kwargs) -> Optional[int]:
+    def records_delete(self, /, record_ids: list[Any], table_oid: int, database_id: int, **kwargs) -> list[Any]:
         """    
         Delete records from a table by primary key.
         
@@ -764,10 +810,8 @@ class API(Client):
             database_id: The Django id of the database containing the table.
         
         Returns:
-            The number of records deleted.
+            The primary key values of the records deleted.
         """
-        
-        ...
     
     @api("records.get")
     def records_get(self, /, record_id: Any, table_oid: int, database_id: int, return_record_summaries: bool = False, table_record_summary_templates: dict[str, Any] = None, **kwargs) -> RecordList:
@@ -789,8 +833,6 @@ class API(Client):
         Returns:
             The requested record, along with some metadata.
         """
-        
-        ...
     
     @api("records.list")
     def records_list(self, /, table_oid: int, database_id: int, limit: int = None, offset: int = None, order: list[OrderBy] = None, filter: Filter = None, grouping: Grouping = None, return_record_summaries: bool = False, **kwargs) -> RecordList:
@@ -812,8 +854,22 @@ class API(Client):
         Returns:
             The requested records, along with some metadata.
         """
+    
+    @api("records.list_summaries")
+    def records_list_summaries(self, /, table_oid: int, database_id: int, limit: Optional[int] = None, offset: Optional[int] = None, search: Optional[str] = None, **kwargs) -> RecordSummaryList:
+        """    
+        List record summaries and keys for each record. Primarily used for selection via the Row seeker.
         
-        ...
+        Args:
+            table_oid: Identity of the table in the user's database.
+            database_id: The Django id of the database containing the table.
+            limit: Optional limit on the number of records to return.
+            offset: Optional offset for pagination.
+            search: Optional search term to filter records.
+        
+        Returns:
+            A list of objects, each containing a record summary and key pertaining to a record.
+        """
     
     @api("records.patch")
     def records_patch(self, /, record_def: dict, record_id: Any, table_oid: int, database_id: int, return_record_summaries: bool = False, **kwargs) -> RecordAdded:
@@ -837,8 +893,6 @@ class API(Client):
         Returns:
             The modified record, along with some metadata.
         """
-        
-        ...
     
     @api("records.search")
     def records_search(self, /, table_oid: int, database_id: int, search_params: list[SearchParam] = (), limit: int = 10, offset: int = 0, return_record_summaries: bool = False, **kwargs) -> RecordList:
@@ -858,12 +912,14 @@ class API(Client):
             search_params: Results are ranked and filtered according to the
                            objects passed here.
             limit: The maximum number of rows we'll return.
+            offset: The number of rows to skip before returning records from
+                following rows.
+            return_record_summaries: Whether to return summaries of retrieved
+                records.
         
         Returns:
             The requested records, along with some metadata.
         """
-        
-        ...
     
     @api("roles.add")
     def roles_add(self, /, rolename: str, database_id: int, password: str = None, login: bool = None, **kwargs) -> RoleInfo:
@@ -879,8 +935,6 @@ class API(Client):
         Returns:
             A dict describing the created role.
         """
-        
-        ...
     
     @api("roles.delete")
     def roles_delete(self, /, role_oid: int, database_id: int, **kwargs):
@@ -891,8 +945,6 @@ class API(Client):
             role_oid: The OID of the role to drop on the database.
             database_id: The Django id of the database.
         """
-        
-        ...
     
     @api("roles.get_current_role")
     def roles_get_current_role(self, /, database_id: int, **kwargs) -> dict:
@@ -906,8 +958,6 @@ class API(Client):
         Returns:
             A dict describing the current role.
         """
-        
-        ...
     
     @api("roles.list")
     def roles_list(self, /, database_id: int, **kwargs) -> list[RoleInfo]:
@@ -921,8 +971,6 @@ class API(Client):
         Returns:
             A list of roles present on the database server.
         """
-        
-        ...
     
     @api("roles.set_members")
     def roles_set_members(self, /, parent_role_oid: int, members: list, database_id: int, **kwargs) -> RoleInfo:
@@ -938,8 +986,6 @@ class API(Client):
         Returns:
             A dict describing the updated information of the parent role.
         """
-        
-        ...
     
     @api("roles.configured.add")
     def roles_configured_add(self, /, server_id: int, name: str, password: str, **kwargs) -> ConfiguredRoleInfo:
@@ -954,8 +1000,6 @@ class API(Client):
         Returns:
             The newly configured role.
         """
-        
-        ...
     
     @api("roles.configured.delete")
     def roles_configured_delete(self, /, configured_role_id: int, **kwargs):
@@ -965,8 +1009,6 @@ class API(Client):
         Args:
             configured_role_id: The Django id of the ConfiguredRole model instance.
         """
-        
-        ...
     
     @api("roles.configured.list")
     def roles_configured_list(self, /, server_id: int, **kwargs) -> list[ConfiguredRoleInfo]:
@@ -979,8 +1021,6 @@ class API(Client):
         Returns:
             A list of configured roles.
         """
-        
-        ...
     
     @api("roles.configured.set_password")
     def roles_configured_set_password(self, /, configured_role_id: int, password: str, **kwargs):
@@ -991,8 +1031,6 @@ class API(Client):
             configured_role_id: The Django id of the ConfiguredRole model instance.
             password: The password for the role.
         """
-        
-        ...
     
     @api("schemas.add")
     def schemas_add(self, /, name: str, database_id: int, owner_oid: int = None, description: Optional[str] = None, **kwargs) -> SchemaInfo:
@@ -1009,8 +1047,6 @@ class API(Client):
         Returns:
             The SchemaInfo describing the user-defined schema in the database.
         """
-        
-        ...
     
     @api("schemas.delete")
     def schemas_delete(self, /, schema_oids: list[int], database_id: int, **kwargs):
@@ -1027,8 +1063,6 @@ class API(Client):
             schema_oids: The OIDs of the schemas to delete.
             database_id: The Django id of the database containing the schema.
         """
-        
-        ...
     
     @api("schemas.get")
     def schemas_get(self, /, schema_oid: int, database_id: int, **kwargs) -> SchemaInfo:
@@ -1042,8 +1076,6 @@ class API(Client):
         Returns:
             The SchemaInfo describing the user-defined schema in the database.
         """
-        
-        ...
     
     @api("schemas.list")
     def schemas_list(self, /, database_id: int, **kwargs) -> list[SchemaInfo]:
@@ -1056,8 +1088,6 @@ class API(Client):
         Returns:
             A list of SchemaInfo objects
         """
-        
-        ...
     
     @api("schemas.patch")
     def schemas_patch(self, /, schema_oid: int, database_id: int, patch: SchemaPatch, **kwargs) -> SchemaInfo:
@@ -1072,8 +1102,6 @@ class API(Client):
         Returns:
             The SchemaInfo describing the user-defined schema in the database.
         """
-        
-        ...
     
     @api("schemas.privileges.list_direct")
     def schemas_privileges_list_direct(self, /, schema_oid: int, database_id: int, **kwargs) -> list[SchemaPrivileges]:
@@ -1087,8 +1115,6 @@ class API(Client):
         Returns:
             A list of schema privileges.
         """
-        
-        ...
     
     @api("schemas.privileges.replace_for_roles")
     def schemas_privileges_replace_for_roles(self, /, privileges: list[SchemaPrivileges], schema_oid: int, database_id: int, **kwargs) -> list[SchemaPrivileges]:
@@ -1112,8 +1138,6 @@ class API(Client):
             A list of all non-default privileges on the schema after the
             operation.
         """
-        
-        ...
     
     @api("schemas.privileges.transfer_ownership")
     def schemas_privileges_transfer_ownership(self, /, schema_oid: int, new_owner_oid: int, database_id: int, **kwargs) -> SchemaInfo:
@@ -1133,8 +1157,6 @@ class API(Client):
         Returns:
             Information about the schema, and the current user privileges.
         """
-        
-        ...
     
     @api("servers.configured.list")
     def servers_configured_list(self, **kwargs) -> list[ConfiguredServerInfo]:
@@ -1144,8 +1166,6 @@ class API(Client):
         Returns:
             A list of server details.
         """
-        
-        ...
     
     @api("servers.configured.patch")
     def servers_configured_patch(self, /, server_id: int, patch: ConfiguredServerPatch, **kwargs) -> ConfiguredServerInfo:
@@ -1159,8 +1179,6 @@ class API(Client):
         Returns:
             An object describing the server.
         """
-        
-        ...
     
     @api("tables.add")
     def tables_add(self, /, schema_oid: int, database_id: int, table_name: str = None, pkey_column_info: CreatablePkColumnInfo = {}, column_data_list: list[CreatableColumnInfo] = (), constraint_data_list: list[list[Union[ForeignKeyConstraint, PrimaryKeyConstraint, UniqueConstraint]]] = (), owner_oid: int = None, comment: str = None, **kwargs) -> int:
@@ -1181,8 +1199,6 @@ class API(Client):
         Returns:
             The `oid`, `name`, and `renamed_columns` of the created table.
         """
-        
-        ...
     
     @api("tables.delete")
     def tables_delete(self, /, table_oid: int, database_id: int, cascade: bool = False, **kwargs) -> str:
@@ -1197,8 +1213,6 @@ class API(Client):
         Returns:
             The name of the dropped table.
         """
-        
-        ...
     
     @api("tables.get")
     def tables_get(self, /, table_oid: int, database_id: int, **kwargs) -> TableInfo:
@@ -1212,8 +1226,6 @@ class API(Client):
         Returns:
             Table details for a given table oid.
         """
-        
-        ...
     
     @api("tables.get_import_preview")
     def tables_get_import_preview(self, /, table_oid: int, columns: list[PreviewableColumnInfo], database_id: int, limit: int = 20, **kwargs) -> list[dict]:
@@ -1229,8 +1241,6 @@ class API(Client):
         Returns:
             The records from the specified columns of the table.
         """
-        
-        ...
     
     @api("tables.get_with_metadata")
     def tables_get_with_metadata(self, /, table_oid: int, database_id: int, **kwargs) -> dict:
@@ -1244,8 +1254,6 @@ class API(Client):
         Returns:
             A dict describing table details along with its metadata.
         """
-        
-        ...
     
     @api("tables.import")
     def tables_import(self, /, data_file_id: int, schema_oid: int, database_id: int, table_name: Optional[str] = None, comment: Optional[str] = None, **kwargs) -> AddedTableInfo:
@@ -1262,8 +1270,6 @@ class API(Client):
         Returns:
             The `oid`, `name`, and `renamed_columns` of the created table.
         """
-        
-        ...
     
     @api("tables.list")
     def tables_list(self, /, schema_oid: int, database_id: int, **kwargs) -> list[TableInfo]:
@@ -1277,8 +1283,6 @@ class API(Client):
         Returns:
             A list of table details.
         """
-        
-        ...
     
     @api("tables.list_joinable")
     def tables_list_joinable(self, /, table_oid: int, database_id: int, max_depth: int = 3, **kwargs) -> JoinableTableInfo:
@@ -1293,8 +1297,6 @@ class API(Client):
         Returns:
             Joinable table details for a given table.
         """
-        
-        ...
     
     @api("tables.list_with_metadata")
     def tables_list_with_metadata(self, /, schema_oid: int, database_id: int, **kwargs) -> list:
@@ -1308,8 +1310,6 @@ class API(Client):
         Returns:
             A list of table details along with metadata.
         """
-        
-        ...
     
     @api("tables.patch")
     def tables_patch(self, /, table_oid: str, table_data_dict: SettableTableInfo, database_id: int, **kwargs) -> str:
@@ -1324,8 +1324,6 @@ class API(Client):
         Returns:
             The name of the altered table.
         """
-        
-        ...
     
     @api("tables.metadata.list")
     def tables_metadata_list(self, /, database_id: int, **kwargs) -> list[TableMetaDataRecord]:
@@ -1338,8 +1336,6 @@ class API(Client):
         Returns:
             Metadata object for a given table oid.
         """
-        
-        ...
     
     @api("tables.metadata.set")
     def tables_metadata_set(self, /, table_oid: int, metadata: TableMetaDataBlob, database_id: int, **kwargs):
@@ -1351,8 +1347,6 @@ class API(Client):
             metadata: A TableMetaDataBlob object describing desired table metadata to set.
             database_id: The Django id of the database containing the table.
         """
-        
-        ...
     
     @api("tables.privileges.list_direct")
     def tables_privileges_list_direct(self, /, table_oid: int, database_id: int, **kwargs) -> list[TablePrivileges]:
@@ -1364,8 +1358,6 @@ class API(Client):
         Returns:
             A list of table privileges.
         """
-        
-        ...
     
     @api("tables.privileges.replace_for_roles")
     def tables_privileges_replace_for_roles(self, /, privileges: list[TablePrivileges], table_oid: int, database_id: int, **kwargs) -> list[TablePrivileges]:
@@ -1389,8 +1381,6 @@ class API(Client):
             A list of all non-default privileges on the table after the
             operation.
         """
-        
-        ...
     
     @api("tables.privileges.transfer_ownership")
     def tables_privileges_transfer_ownership(self, /, table_oid: int, new_owner_oid: int, database_id: int, **kwargs) -> TableInfo:
@@ -1410,8 +1400,6 @@ class API(Client):
         Returns:
             Information about the table, and the current user privileges.
         """
-        
-        ...
     
     @api("users.add")
     def users_add(self, /, user_def: UserDef, **kwargs) -> UserInfo:
@@ -1427,8 +1415,6 @@ class API(Client):
         Returns:
             The information of the created user.
         """
-        
-        ...
     
     @api("users.delete")
     def users_delete(self, /, user_id: int, **kwargs):
@@ -1441,8 +1427,6 @@ class API(Client):
         Privileges:
             This endpoint requires the caller to be a superuser.
         """
-        
-        ...
     
     @api("users.get")
     def users_get(self, /, user_id: int, **kwargs) -> UserInfo:
@@ -1455,8 +1439,6 @@ class API(Client):
         Returns:
             User information for a given user_id.
         """
-        
-        ...
     
     @api("users.list")
     def users_list(self, **kwargs) -> list[UserInfo]:
@@ -1466,8 +1448,6 @@ class API(Client):
         Returns:
             A list of information about mathesar users.
         """
-        
-        ...
     
     @api("users.patch_other")
     def users_patch_other(self, /, user_id: int, username: str, is_superuser: bool, email: str, full_name: str, display_language: str, **kwargs) -> UserInfo:
@@ -1488,8 +1468,6 @@ class API(Client):
         Returns:
             Updated user information for a given user_id.
         """
-        
-        ...
     
     @api("users.patch_self")
     def users_patch_self(self, /, username: str, email: str, full_name: str, display_language: str, **kwargs) -> UserInfo:
@@ -1505,8 +1483,6 @@ class API(Client):
         Returns:
             Updated user information of the caller.
         """
-        
-        ...
     
     @api("users.password.replace_own")
     def users_password_replace_own(self, /, old_password: str, new_password: str, **kwargs):
@@ -1517,8 +1493,6 @@ class API(Client):
             old_password: Old password of the currently logged in user.
             new_password: New password of the user to set.
         """
-        
-        ...
     
     @api("users.password.revoke")
     def users_password_revoke(self, /, user_id: int, new_password: str, **kwargs):
@@ -1532,5 +1506,3 @@ class API(Client):
         Privileges:
             This endpoint requires the caller to be a superuser.
         """
-        
-        ...

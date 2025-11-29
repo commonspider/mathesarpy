@@ -30,6 +30,8 @@ class AnalyticsReport(TypedDict):
         connected_database_record_count: The total number of records in
             all connected databasees (approximated)
         exploration_count: The number of explorations.
+        form_count: The number of forms.
+        public_form_count: The number of published forms.
     """
 
     installation_id: NotRequired[str]
@@ -42,6 +44,8 @@ class AnalyticsReport(TypedDict):
     connected_database_table_count: int
     connected_database_record_count: int
     exploration_count: int
+    form_count: int
+    public_form_count: int
 
 
 class CollaboratorInfo(TypedDict):
@@ -170,6 +174,7 @@ class SettableColumnInfo(TypedDict):
         id: The `attnum` of the column in the table.
         name: The name of the column.
         type: The type of the column on the database.
+        cast_options: Suggestions to be used while type casting.
         type_options: The options applied to the column type.
         nullable: Whether or not the column is nullable.
         default: The default value.
@@ -179,6 +184,7 @@ class SettableColumnInfo(TypedDict):
     id: int
     name: NotRequired[str]
     type: NotRequired[str]
+    cast_options: NotRequired[dict]
     type_options: NotRequired[TypeOptions]
     nullable: NotRequired[bool]
     default: NotRequired[ColumnDefault]
@@ -209,6 +215,7 @@ class ColumnMetaDataRecord(TypedDict):
         duration_min: The smallest unit for displaying durations.
         duration_max: The largest unit for displaying durations.
         display_width: The pixel width of the column
+        file_backend: The name of a backend for storing file attachments.
     """
 
     database_id: int
@@ -249,7 +256,8 @@ class ColumnMetaDataBlob(TypedDict):
         date_format: A string representing the format of date values.
         duration_min: The smallest unit for displaying durations.
         duration_max: The largest unit for displaying durations.
-        display_width: The pixel width of the column
+        display_width: The pixel width of the column.
+        file_backend: The name of a backend for storing file attachments.
     """
 
     attnum: int
@@ -574,6 +582,213 @@ class ExplorationResult(TypedDict):
     offset: NotRequired[int]
 
 
+class AddOrReplaceFieldDef(TypedDict):
+    """    
+    FormField definition needed while adding or replacing a form.
+    
+    Attributes:
+        key: A unique string identifier for the field within a form.
+        index: The order in which the field should be displayed.
+        label: The text to be displayed for the field input.
+        help: The help text to be displayed for the field input.
+        kind: Type of the selected column (scalar_column, foreign_key).
+        column_attnum: The attnum of column to be selected as a field. Applicable for scalar_column and foreign_key fields.
+        related_table_oid: The oid of the related table. Applicable for foreign_key fields.
+        fk_interaction_rule: Determines user interaction with a foreign_key field's related record (must_pick, can_pick_or_create, must_create).
+        styling: Information about the visual appearance of the field.
+        is_required: Specifies whether a value for the field is mandatory.
+        child_fields: List of definitions of child fields. Applicable for foreign_key fields.
+    """
+
+    key: str
+    index: int
+    label: NotRequired[str]
+    help: NotRequired[str]
+    kind: Literal['scalar_column', 'foreign_key']
+    column_attnum: NotRequired[int]
+    related_table_oid: NotRequired[int]
+    fk_interaction_rule: Literal['must_pick', 'can_pick_or_create', 'must_create']
+    styling: NotRequired[dict]
+    is_required: NotRequired[bool]
+    child_fields: NotRequired[list['AddOrReplaceFieldDef']]
+
+
+class AddFormDef(TypedDict):
+    """    
+    Definition needed to add a form.
+    
+    Attributes:
+        name: The name of the form.
+        description: The description of the form.
+        version: The version of the form for reconciliation of json fields.
+        database_id: The Django id of the database containing the Form.
+        schema_oid: The OID of the schema where within which form exists.
+        base_table_oid: The table OID based on which a form will be created.
+        associated_role_id: The Django id of the configured role to be used while submitting a form.
+        header_title: The title of the rendered form.
+        header_subtitle: The subtitle of the rendered form.
+        submit_message: Message to be displayed upon submission.
+        submit_redirect_url: Redirect path after submission.
+        submit_button_label: Text to be displayed on the submit button.
+        fields: Definition of Fields within the form.
+    """
+
+    name: str
+    description: NotRequired[str]
+    version: int
+    database_id: int
+    schema_oid: int
+    base_table_oid: int
+    associated_role_id: NotRequired[int]
+    header_title: dict
+    header_subtitle: NotRequired[dict]
+    submit_message: NotRequired[dict]
+    submit_redirect_url: NotRequired[str]
+    submit_button_label: NotRequired[str]
+    fields: list[AddOrReplaceFieldDef]
+
+
+class FieldInfo(TypedDict):
+    """    
+    Information about a form field.
+    
+    Attributes:
+        id: The Django id of the Field on the database.
+        key: A unique string identifier for the field within a form.
+        form_id: The Django id of the Form on the database.
+        index: The order in which the field should be displayed.
+        label: The text to be displayed for the field input.
+        help: The help text to be displayed for the field input.
+        kind: Type of the selected column (scalar_column, foreign_key).
+        column_attnum: The attnum of column to be selected as a field. Applicable for scalar_column and foreign_key fields.
+        related_table_oid: The oid of the related table. Applicable for foreign_key fields.
+        fk_interaction_rule: Determines user interaction with a foreign_key field's related record (must_pick, can_pick_or_create, must_create).
+        parent_field_id: The Django id of the Field set as parent for related fields.
+        styling: Information about the visual appearance of the field.
+        is_required: Specifies whether a value for the field is mandatory.
+        child_fields: List of definitions of child fields. Applicable for foreign_key fields.
+    """
+
+    id: int
+    key: str
+    form_id: int
+    index: int
+    label: NotRequired[str]
+    help: NotRequired[str]
+    kind: Literal['scalar_column', 'foreign_key']
+    column_attnum: NotRequired[int]
+    related_table_oid: NotRequired[int]
+    fk_interaction_rule: Literal['must_pick', 'can_pick_or_create', 'must_create']
+    styling: NotRequired[dict]
+    is_required: bool
+    child_fields: NotRequired[list['FieldInfo']]
+
+
+class FormInfo(TypedDict):
+    """    
+    Information about a form.
+    
+    Attributes:
+        id: The Django id of the Form on the database.
+        created_at: The time at which the form model got created.
+        updated_at: The time at which the form model was last updated.
+        token: A UUIDv4 object used to identify a form uniquely.
+        name: The name of the form.
+        description: The description of the form.
+        version: The version of the form for reconciliation of json fields.
+        database_id: The Django id of the database containing the Form.
+        schema_oid: The OID of the schema where within which form exists.
+        base_table_oid: The table OID based on which a form will be created.
+        associated_role_id: The Django id of the configured role to be used while submitting a form.
+        header_title: The title of the rendered form.
+        header_subtitle: The subtitle of the rendered form.
+        publish_public: Specifies whether the form is publicly accessible.
+        submit_message: Message to be displayed upon submission.
+        submit_redirect_url: Redirect path after submission.
+        submit_button_label: Text to be displayed on the submit button.
+        fields: Definition of Fields within the form.
+    """
+
+    id: int
+    created_at: str
+    updated_at: str
+    token: str
+    name: str
+    description: NotRequired[str]
+    version: int
+    database_id: int
+    schema_oid: int
+    base_table_oid: int
+    associated_role_id: NotRequired[int]
+    header_title: dict
+    header_subtitle: NotRequired[dict]
+    publish_public: bool
+    submit_message: NotRequired[dict]
+    submit_redirect_url: NotRequired[str]
+    submit_button_label: NotRequired[str]
+    fields: list[FieldInfo]
+
+
+class SummarizedRecordReference(TypedDict):
+    """    
+    A summarized reference to a record, typically used in foreign key fields.
+    
+    Attributes:
+        key: A unique identifier for the record.
+        summary: The record summary
+    """
+
+    key: Any
+    summary: str
+
+
+class RecordSummaryList(TypedDict):
+    """    
+    Response for listing record summaries.
+    
+    Attributes:
+        count: The total number of records matching the criteria.
+        results: A list of summarized record references, each containing a key and a summary.
+    """
+
+    count: int
+    results: list[SummarizedRecordReference]
+
+
+class SettableFormDef(TypedDict):
+    """    
+    Definition needed to update a form.
+    
+    Attributes:
+        id: The Django id of the Form on the database.
+        name: The name of the form.
+        description: The description of the form.
+        version: The version of the form.
+        associated_role_id: The Django id of the configured role to be used while submitting a form.
+        header_title: The title of the rendered form.
+        header_subtitle: The subtitle of the rendered form.
+        submit_message: Message to be displayed upon submission.
+        submit_redirect_url: Redirect path after submission.
+        submit_button_label: Text to be displayed on the submit button.
+        fields: Definition of Fields within the form.
+    """
+
+    name: str
+    description: NotRequired[str]
+    version: int
+    database_id: int
+    schema_oid: int
+    base_table_oid: int
+    associated_role_id: NotRequired[int]
+    header_title: dict
+    header_subtitle: NotRequired[dict]
+    submit_message: NotRequired[dict]
+    submit_redirect_url: NotRequired[str]
+    submit_button_label: NotRequired[str]
+    fields: list[AddOrReplaceFieldDef]
+    id: int
+
+
 class RecordAdded(TypedDict):
     """    
     Record from a table, along with some meta data
@@ -649,6 +864,8 @@ class RecordList(TypedDict):
         linked_record_smmaries: Information for previewing foreign key
             values, provides a map of foreign key to a text summary.
         record_summaries: Information for previewing returned records.
+        download_links: Information for viewing or downloading file
+            attachments.
     """
 
     count: int
@@ -656,6 +873,7 @@ class RecordList(TypedDict):
     grouping: GroupingResponse
     linked_record_summaries: dict[str, dict[str, str]]
     record_summaries: dict[str, str]
+    download_links: NotRequired[dict]
 
 
 class OrderBy(TypedDict):

@@ -3,7 +3,7 @@ Unofficial python bindings for the Mathesar API.
 
 ## Installation
 ```
-pip install -i https://test.pypi.org/simple/ commonspider-mathesarpy
+pip install -i https://test.pypi.org/simple/commonspider-mathesarpy
 ```
 
 ## Usage
@@ -18,6 +18,6 @@ mathesar.users_list()
 ```
 
 ## Documentation
-All methods are self documented and they work with Mathesar 0.4.0.
+All methods are self documented and they work with Mathesar 0.7.0
 
-For more information read the official [documentation](https://docs.mathesar.org/0.4.0/api/methods/).
+For more information read the official [documentation](https://docs.mathesar.org/0.7.0/api/methods/).

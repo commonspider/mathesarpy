@@ -33,3 +33,7 @@ class SyntaxError(MathesarException, code=-30237):
 
 class UndefinedObject(MathesarException, code=-30257):
     ...
+
+
+class Unauthorized(MathesarException, code=-32603):
+    ...
